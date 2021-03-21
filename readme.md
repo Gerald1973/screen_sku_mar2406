@@ -2,13 +2,25 @@
 
 ## Description
 
-Todo
+![Proof of concept](ILI9341.jpg)
+
+This program demonstrates the possibility of using the SKU:MAR2406 to display some information from
+the Raspberry PI Pico RP2040.  
+
+Not yet tested:  
+-The tactile screen
+-The micro SDCard reader.
+
 
 ### Prerequisite
 
 The Raspberry PI Pico C/C++ SDK:  
 <https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf>  
 <https://github.com/raspberrypi/pico-sdk>
+
+The SKU:MAR2406:  
+<http://www.lcdwiki.com/2.4inch_Arduino_Display> for technical information, because this demo is adapted for the RP2040.  
+<https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf> the data sheet of the ILI9341 (the screen)
 
 ### Documentation
 
