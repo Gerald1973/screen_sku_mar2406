@@ -1,0 +1,51 @@
+oid LCDWIKI_KBV::reset(void)
+{
+//	have_reset = 1;
+//    setWriteDir();
+//Set all control bits to idle state
+    CS_IDLE;
+    RD_IDLE;
+    WR_IDLE;
+
+#ifdef USE_ADAFRUIT_SHIELD_PIN
+  digitalWrite(5, LOW);
+  delay(2);
+  digitalWrite(5, HIGH);
+//  delay(100);
+  //digitalWrite(5, LOW);
+ // delay(100);
+#else
+  if(_reset) 
+  {
+    digitalWrite(_reset, LOW);
+    delay(2);
+    digitalWrite(_reset, HIGH);
+//	delay(100);
+	//digitalWrite(_reset, LOW);
+	//delay(100);
+  }
+
+
+  #define writeCmd16(x)  CD_COMMAND; write16(x)
+#define writeData16(x)  CD_DATA; write16(x)
+
+
+uint16_t LCDWIKI_KBV::Read_Reg(uint16_t reg, int8_t index)
+{
+	uint16_t ret,high;
+    uint8_t low;
+	CS_ACTIVE;
+    writeCmd16(reg);
+    setReadDir();
+    delay(1); 
+	do 
+	{ 
+		read16(ret);
+	}while (--index >= 0);   
+    RD_IDLE;
+    CS_IDLE;
+    setWriteDir();
+    return ret;
+}
+
+Voir p27 pour ecriture et lecture

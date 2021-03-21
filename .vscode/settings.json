@@ -1,0 +1,26 @@
+{
+  "cmake.configureOnOpen": false,
+  "cmake.statusbar.advanced": {
+    "debug" : {
+      "visibility": "hidden"
+              },    "launch" : {
+      "visibility": "hidden"
+               },
+    "build" : {
+      "visibility": "hidden"
+               },
+    "buildTarget" : {
+      "visibility": "hidden"
+               },
+    },
+    "files.associations": {
+      "*.tcc": "c",
+      "unordered_map": "c",
+      "fstream": "c",
+      "istream": "c",
+      "ostream": "c",
+      "sstream": "c",
+      "constants.h": "c",
+      "stdio.h": "c"
+    },
+}
