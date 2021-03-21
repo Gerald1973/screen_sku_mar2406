@@ -10,39 +10,6 @@
 #include "constants.h"
 #include "lcd.h"
 
-// UART defines
-// By default the stdout UART is `uart0`, so we will use the second one
-#define UART_ID uart1
-#define BAUD_RATE 9600
-
-// Use pins 4 and 5 for UART1
-// Pins can be changed, see the GPIO function select table in the datasheet for information on GPIO assignments
-#define UART_TX_PIN 4
-#define UART_RX_PIN 5
-
-// GPIO defines
-// Example uses GPIO 2
-#define GPIO 2
-
-// SPI Defines
-// We are going to use SPI 0, and allocate it to the following GPIO pins
-// Pins can be changed, see the GPIO function select table in the datasheet for information on GPIO assignments
-#define SPI_PORT spi0
-#define PIN_MISO 16
-#define PIN_CS 17
-#define PIN_SCK 18
-#define PIN_MOSI 19
-
-// I2C defines
-// This example will use I2C0 on GPIO8 (SDA) and GPIO9 (SCL) running at 400KHz.
-// Pins can be changed, see the GPIO function select table in the datasheet for information on GPIO assignments
-#define I2C_PORT i2c0
-#define I2C_SDA 8
-#define I2C_SCL 9
-
-
-
-
 void setDataOut(bool value)
 {
     gpio_set_dir(LCD_D0, value);
@@ -108,7 +75,7 @@ uint8_t readPins()
     return result;
 }
 
-void Lcd_Write_Com(uint8_t cmd)
+void lcd_write_command(uint8_t cmd)
 {
     setDataOut(true);
     gpio_put(LCD_CS_CSX, 0);
@@ -124,7 +91,7 @@ void Lcd_Write_Com(uint8_t cmd)
     gpio_put(LCD_CS_CSX, 1);
 }
 
-void Lcd_Write_Data(uint8_t cmd)
+void lcd_write_data(uint8_t cmd)
 {
     setDataOut(true);
     gpio_put(LCD_CS_CSX, 0);
@@ -148,7 +115,7 @@ void Lcd_Write_Data(uint8_t cmd)
  * @param results an array to store the value(s)
  * @return uint8_t* 
  */
-void ili_read(uint8_t cmd, int numberOfResult, int start, uint8_t *results)
+void lcd_read_info(uint8_t cmd, int numberOfResult, int start, uint8_t *results)
 {
     gpio_put(LCD_CS_CSX, 0);
     gpio_put(LCD_RST_RESX, 1);
@@ -186,69 +153,96 @@ void lcd_init(void)
     gpio_put(LCD_WR_WRX, 1);
     gpio_put(LCD_CS_CSX, 0); //CS
 
-    Lcd_Write_Com(CMD_POWER_CONTROL_A);
-    Lcd_Write_Data(0x39);
-    Lcd_Write_Data(0x2C);
-    Lcd_Write_Data(0x00);
-    Lcd_Write_Data(0x34);
-    Lcd_Write_Data(0x02);
+    lcd_write_command(CMD_POWER_CONTROL_A);
+    lcd_write_data(0x39);
+    lcd_write_data(0x2C);
+    lcd_write_data(0x00);
+    lcd_write_data(0x34);
+    lcd_write_data(0x02);
 
-    Lcd_Write_Com(CMD_POWER_CONTROL_B);
-    Lcd_Write_Data(0x00);
-    Lcd_Write_Data(0XC1);
-    Lcd_Write_Data(0X30);
+    lcd_write_command(CMD_POWER_CONTROL_B);
+    lcd_write_data(0x00);
+    lcd_write_data(0XC1);
+    lcd_write_data(0X30);
 
-    Lcd_Write_Com(CMD_DRIVER_TIMING_CONTROL_A);
-    Lcd_Write_Data(0x85);
-    Lcd_Write_Data(0x00);
-    Lcd_Write_Data(0x78);
+    lcd_write_command(CMD_DRIVER_TIMING_CONTROL_A);
+    lcd_write_data(0x85);
+    lcd_write_data(0x00);
+    lcd_write_data(0x78);
 
-    Lcd_Write_Com(CMD_DRIVER_TIMING_CONTROL_B);
-    Lcd_Write_Data(0x00);
-    Lcd_Write_Data(0x00);
+    lcd_write_command(CMD_DRIVER_TIMING_CONTROL_B);
+    lcd_write_data(0x00);
+    lcd_write_data(0x00);
 
-    Lcd_Write_Com(CMD_POWER_ON_SEQUENCE_CONTROL);
-    Lcd_Write_Data(0x64);
-    Lcd_Write_Data(0x03);
-    Lcd_Write_Data(0X12);
-    Lcd_Write_Data(0X81);
+    lcd_write_command(CMD_POWER_ON_SEQUENCE_CONTROL);
+    lcd_write_data(0x64);
+    lcd_write_data(0x03);
+    lcd_write_data(0X12);
+    lcd_write_data(0X81);
 
-    Lcd_Write_Com(CMD_PUMP_RATIO_CONTROL);
-    Lcd_Write_Data(0x20);
+    lcd_write_command(CMD_PUMP_RATIO_CONTROL);
+    lcd_write_data(0x20);
 
-    Lcd_Write_Com(CMD_POWER_CONTROL_1);  //Power control
-    Lcd_Write_Data(0x23); //VRH[5:0]
+    lcd_write_command(CMD_POWER_CONTROL_1); //Power control
+    lcd_write_data(0x23);                   //VRH[5:0]
 
-    Lcd_Write_Com(CMD_POWER_CONTROL_2);  //Power control
-    Lcd_Write_Data(0x10); //SAP[2:0];BT[3:0]
+    lcd_write_command(CMD_POWER_CONTROL_2); //Power control
+    lcd_write_data(0x10);                   //SAP[2:0];BT[3:0]
 
-    Lcd_Write_Com(CMD_VCOM_CONTROL_1);  //VCM control
-    Lcd_Write_Data(0x3e); //Contrast
-    Lcd_Write_Data(0x28);
+    lcd_write_command(CMD_VCOM_CONTROL_1); //VCM control
+    lcd_write_data(0x3e);                  //Contrast
+    lcd_write_data(0x28);
 
-    Lcd_Write_Com(CMD_VCOM_CONTROL_2);  //VCM control2
-    Lcd_Write_Data(0x86); //--
+    lcd_write_command(CMD_VCOM_CONTROL_2); //VCM control2
+    lcd_write_data(0x86);                  //--
 
-    Lcd_Write_Com(CMD_MEMORY_ACCESS_CONTROL); // Memory Access Control
-    Lcd_Write_Data(0x48);
+    lcd_write_command(CMD_MEMORY_ACCESS_CONTROL); // Memory Access Control
+    lcd_write_data(0x48);
 
-    Lcd_Write_Com(CMD_PIXEL_FORMAT_SET);
-    Lcd_Write_Data(0x55);
+    lcd_write_command(CMD_PIXEL_FORMAT_SET);
+    lcd_write_data(0x55); //16 bits by pixel
 
-    Lcd_Write_Com(CMD_FRAME_CONTROL);
-    Lcd_Write_Data(0x00);
-    Lcd_Write_Data(0x18);
+    lcd_write_command(CMD_FRAME_CONTROL);
+    lcd_write_data(0x00);
+    lcd_write_data(0x18);
 
-    Lcd_Write_Com(CMD_DISPLAY_FUNCTION_CONTROL); // Display Function Control
-    Lcd_Write_Data(0x08);
-    Lcd_Write_Data(0x82);
-    Lcd_Write_Data(0x27);
+    lcd_write_command(CMD_DISPLAY_FUNCTION_CONTROL); // Display Function Control
+    lcd_write_data(0x08);
+    lcd_write_data(0x82);
+    lcd_write_data(0x27);
 
-    Lcd_Write_Com(CMD_SLEEP_OUT); //Exit Sleep
+    lcd_write_command(CMD_SLEEP_OUT); //Exit Sleep
     sleep_ms(120);
 
-    Lcd_Write_Com(CMD_DISPLAY_ON); //Display on
-    Lcd_Write_Com(CMD_MEMORY_WRITE);
+    lcd_write_command(CMD_DISPLAY_ON); //Display on
+    //lcd_write_command(CMD_MEMORY_WRITE);
 }
 
+void set_address(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
+{
+    lcd_write_command(CMD_COLUMN_ADDRESS_SET);
+    lcd_write_data(x1 >> 8);
+    lcd_write_data(x1);
+    lcd_write_data(x2 >> 8);
+    lcd_write_data(x2);
+    lcd_write_command(CMD_PAGE_ADDRESS_SET);
+    lcd_write_data(y1 >> 8);
+    lcd_write_data(y1);
+    lcd_write_data(y2 >> 8);
+    lcd_write_data(y2);
+    lcd_write_command(CMD_MEMORY_WRITE);
+}
 
+/*
+00000000 00000000 00000000
+
+*/
+void pset(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b)
+{
+    set_address(x,y,x,y);
+    uint16_t result = (r >> 2) << 11;
+    result = result + ((g >> 3) << 6);
+    result = result + (b >> 2);
+    lcd_write_data(result >> 8);
+    lcd_write_data(result);
+}

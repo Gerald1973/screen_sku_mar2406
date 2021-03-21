@@ -17,6 +17,9 @@ const uint8_t LCD_D5;
 const uint8_t LCD_D6;
 const uint8_t LCD_D7;
 
+const uint16_t WIDTH;
+const uint16_t HEIGHT;
+
 //Command
 const uint8_t CMD_NO_OP;
 const uint8_t CMD_SOFTWARE_RESET;
@@ -26,6 +29,8 @@ const uint8_t CMD_READ_SELF_DIAG;
 const uint8_t CMD_SLEEP_OUT;
 const uint8_t CMD_DISPLAY_OFF;
 const uint8_t CMD_DISPLAY_ON;
+const uint8_t CMD_COLUMN_ADDRESS_SET;
+const uint8_t CMD_PAGE_ADDRESS_SET;
 const uint8_t CMD_MEMORY_WRITE;
 const uint8_t CMD_MEMORY_ACCESS_CONTROL;
 const uint8_t CMD_PIXEL_FORMAT_SET;

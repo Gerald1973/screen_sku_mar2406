@@ -16,6 +16,9 @@ const uint8_t LCD_D5 = 5;
 const uint8_t LCD_D6 = 6;
 const uint8_t LCD_D7 = 7;
 
+const uint16_t WIDTH = 240;
+const uint16_t HEIGHT = 320;
+
 //Command
 const uint8_t CMD_NO_OP = 0x00;
 const uint8_t CMD_SOFTWARE_RESET = 0x01;
@@ -25,6 +28,8 @@ const uint8_t CMD_READ_SELF_DIAG = 0x0f;
 const uint8_t CMD_SLEEP_OUT = 0x11;
 const uint8_t CMD_DISPLAY_OFF = 0x28;
 const uint8_t CMD_DISPLAY_ON = 0x29;
+const uint8_t CMD_COLUMN_ADDRESS_SET = 0x2A;
+const uint8_t CMD_PAGE_ADDRESS_SET = 0x2B;
 const uint8_t CMD_MEMORY_WRITE = 0x2c;
 const uint8_t CMD_MEMORY_ACCESS_CONTROL = 0x36;
 const uint8_t CMD_PIXEL_FORMAT_SET = 0x3A;
