@@ -8,8 +8,8 @@ This program demonstrates the possibility of using the SKU:MAR2406 to display so
 the Raspberry PI Pico RP2040.  
 
 Not yet tested:  
--The tactile screen
--The micro SDCard reader.
+-The tactile screen  
+-The micro SDCard reader
 
 
 ### Prerequisite
