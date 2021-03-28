@@ -28,7 +28,7 @@ int main()
         {
             for (uint16_t x = 0; x < WIDTH; x++)
             {
-                pset(x, y, y % 255, y % 255, y % 255);
+                pset(x, y, y % 255, x , 255 - (y % 255));
             }
         }
         line(0, 0, 240, 320, BLACK);
