@@ -13,6 +13,8 @@
  * 
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 /**
  * @brief Set the Out object
  * 

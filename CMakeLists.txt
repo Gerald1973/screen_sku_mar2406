@@ -23,7 +23,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(screen_sku_mar2406 main.c lcd.c constants.c)
+add_executable(screen_sku_mar2406 main.c lcd.c graphism.c constants.c)
 
 pico_set_program_name(screen_sku_mar2406 "screen_sku_mar2406")
 pico_set_program_version(screen_sku_mar2406 "0.1")

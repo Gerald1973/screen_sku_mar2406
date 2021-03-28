@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include "constants.h"
 #include "lcd.h"
+#include "graphism.h"
 
 int main()
 {
@@ -25,19 +26,14 @@ int main()
         printf(" Test RGB\n");
         for (uint16_t y = 0; y < HEIGHT; y++)
         {
-            for (uint16_t x = 0; x < 80; x++)
+            for (uint16_t x = 0; x < WIDTH; x++)
             {
-                pset(x, y, 255, 0, 0);
+                pset(x, y, y % 255, y % 255, y % 255);
             }
-            for (uint16_t x = 80; x < 160; x++)
-            {
-                pset(x, y, 0, 255, 0);
-            }
-            for (uint16_t x = 160; x < WIDTH; x++)
-            {
-                pset(x, y, 0, 0, 255);
-            }   
         }
+        line(0, 0, 240, 320, BLACK);
+        line(240, 0, 0, 320, WHITE);
+        circle(120, 160, 120, YELLOW);
     }
     return 0;
 }
