@@ -72,3 +72,8 @@ void circle(uint16_t xc, uint16_t yc, uint16_t r, Color c)
         drawCircle(xc, yc, x, y, c);
     }
 }
+
+void clear_screen(uint16_t x1, uint16_t y1, uint16_t  x2, uint16_t y2, Color c)
+{
+    fill_area(x1, y1, x2, y2, c.r, c.g, c.b);
+}

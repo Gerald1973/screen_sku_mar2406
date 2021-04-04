@@ -10,6 +10,13 @@
 #include "constants.h"
 #include "lcd.h"
 
+uint16_t rgb_to_16(uint8_t r, uint8_t g, uint8_t b) {
+    uint16_t result = (r >> 2) << 11;
+    result = result | ((g >> 3) << 6);
+    result = result | (b >> 2);
+    return result;
+}
+
 void setDataOut(bool value)
 {
     gpio_set_dir(LCD_D0, value);
@@ -222,14 +229,14 @@ void set_address(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 {
     lcd_write_command(CMD_COLUMN_ADDRESS_SET);
     lcd_write_data(x1 >> 8);
-    lcd_write_data(x1);
+    lcd_write_data(x1 & 0xFF);
     lcd_write_data(x2 >> 8);
-    lcd_write_data(x2);
+    lcd_write_data(x2 & 0xFF);
     lcd_write_command(CMD_PAGE_ADDRESS_SET);
     lcd_write_data(y1 >> 8);
-    lcd_write_data(y1);
+    lcd_write_data(y1 & 0xFF);
     lcd_write_data(y2 >> 8);
-    lcd_write_data(y2);
+    lcd_write_data(y2 & 0xFF);
     lcd_write_command(CMD_MEMORY_WRITE);
 }
 
@@ -239,10 +246,24 @@ void set_address(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 */
 void pset(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b)
 {
-    set_address(x,y,x,y);
-    uint16_t result = (r >> 2) << 11;
-    result = result + ((g >> 3) << 6);
-    result = result + (b >> 2);
+    set_address(x, y, x, y);
+    uint16_t result = rgb_to_16(r,g,b);
     lcd_write_data(result >> 8);
     lcd_write_data(result);
+}
+
+void fill_area(uint16_t x1, uint16_t y1, uint16_t width, uint16_t height, uint8_t r, uint8_t g, uint8_t b)
+{
+    uint16_t color = rgb_to_16(r,g,b);
+    set_address(x1, y1, x1 + width -1, y1 + height -1);
+    uint8_t msb = color >> 8;
+    uint8_t lsb = color & 0xFF;;
+    for (uint16_t x = 0; x < width; x++)
+    {
+        for (uint16_t y = 0; y < height; y++)
+        {
+            lcd_write_data(msb);
+            lcd_write_data(lsb);
+        }
+    }
 }

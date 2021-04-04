@@ -55,4 +55,11 @@ void line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, Color c);
  */
 void circle(uint16_t x0, uint16_t y0, uint16_t radius, Color c);
 
+/**
+ * @brief Clear the screen with the given color.
+ * 
+ * @param c the given color
+ */
+void clear_screen(uint16_t x1, uint16_t y1, uint16_t  x2, uint16_t y2, Color c);
+
 #endif

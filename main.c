@@ -13,6 +13,7 @@ int main()
     uint8_t tmps[4] = {0};
     while (1)
     {
+        printf("A_0001\n");
         lcd_read_info(CMD_READ_ID4, 3, 1, tmps);
         printf("IC Version           : %x\n", tmps[0]);
         printf("IC model name part 1 : %x\n", tmps[1]);
@@ -24,16 +25,18 @@ int main()
         printf("Self diag            : %x\n", tmps[0]);
         sleep_ms(1000);
         printf(" Test RGB\n");
+        //clear_screen(GREEN);
         for (uint16_t y = 0; y < HEIGHT; y++)
         {
-            for (uint16_t x = 0; x < WIDTH; x++)
+            for (uint16_t x = 0; x < WIDTH - 10; x++)
             {
                 pset(x, y, y % 255, x , 255 - (y % 255));
             }
         }
         line(0, 0, 240, 320, BLACK);
         line(240, 0, 0, 320, WHITE);
-        circle(120, 160, 120, YELLOW);
+        circle(120, 160, 120, WHITE);
+        clear_screen(0, 0, 240, 320, RED);
     }
     return 0;
 }

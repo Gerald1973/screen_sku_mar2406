@@ -15,6 +15,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
+uint16_t rgb_to_16(uint8_t r, uint8_t g, uint8_t b);
+
 /**
  * @brief Set the Out object
  * 
@@ -95,5 +98,7 @@ void set_address(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
  * @param b the blue value [0..255]
  */
 void pset(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b);
+
+void fill_area(uint16_t x1, uint16_t y1,uint16_t width, uint16_t height, uint8_t r, uint8_t g, uint8_t b);
 
 #endif
