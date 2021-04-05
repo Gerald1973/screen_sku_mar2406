@@ -22,6 +22,7 @@
       "sstream": "c",
       "constants.h": "c",
       "stdio.h": "c",
-      "graphism.h": "c"
+      "graphism.h": "c",
+      "typeinfo": "c"
     },
 }

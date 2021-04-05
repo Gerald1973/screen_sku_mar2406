@@ -32,7 +32,7 @@ const Color YELLOW;
  * @param y0 y
  * @param c  color
  */
-void plot(uint16_t x0, uint16_t y0, Color c);
+void graph_plot(uint16_t x0, uint16_t y0, Color c);
 
 /**
  * @brief The line
@@ -43,7 +43,7 @@ void plot(uint16_t x0, uint16_t y0, Color c);
  * @param y1 end y
  * @param c  one color
  */
-void line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, Color c);
+void graph_line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, Color c);
 
 /**
  * @brief The circle
@@ -53,13 +53,13 @@ void line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, Color c);
  * @param radius radius
  * @param c one color
  */
-void circle(uint16_t x0, uint16_t y0, uint16_t radius, Color c);
+void graph_circle(uint16_t x0, uint16_t y0, uint16_t radius, Color c);
 
 /**
  * @brief Clear the screen with the given color.
  * 
  * @param c the given color
  */
-void clear_screen(uint16_t x1, uint16_t y1, uint16_t  x2, uint16_t y2, Color c);
+void graph_fill_area(uint16_t x1, uint16_t y1, uint16_t  x2, uint16_t y2, Color c);
 
 #endif

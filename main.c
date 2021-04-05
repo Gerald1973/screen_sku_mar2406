@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "lcd.h"
 #include "graphism.h"
+#include "characters_c64.h"
 
 int main()
 {
@@ -28,15 +29,23 @@ int main()
         //clear_screen(GREEN);
         for (uint16_t y = 0; y < HEIGHT; y++)
         {
-            for (uint16_t x = 0; x < WIDTH - 10; x++)
+            for (uint16_t x = 0; x < WIDTH; x++)
             {
                 pset(x, y, y % 255, x , 255 - (y % 255));
             }
         }
-        line(0, 0, 240, 320, BLACK);
-        line(240, 0, 0, 320, WHITE);
-        circle(120, 160, 120, WHITE);
-        clear_screen(0, 0, 240, 320, RED);
+        graph_line(0, 0, 240, 320, BLACK);
+        graph_line(240, 0, 0, 320, WHITE);
+        graph_circle(120, 160, 120, WHITE);
+        uint16_t posy = 0;
+        uint16_t posx = 0;
+        for (int i = 0; i < 91; i++) {
+            posx = (i * CHAR_WIDTH) % WIDTH;
+            posy = ((i * CHAR_WIDTH) / WIDTH) * CHAR_HEIGHT;
+            char_draw(i + 32, posx ,posy, WHITE);
+        }
+        sleep_ms(2000);
+        //graph_fill_area(0, 0, 240, 320, RED);
     }
     return 0;
 }

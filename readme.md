@@ -1,4 +1,4 @@
-      # Screen SKU:MAR2406, ILI9341
+# Screen SKU:MAR2406, ILI9341
 
 ## Description
 
@@ -10,7 +10,6 @@ the Raspberry PI Pico RP2040.
 Not yet tested:  
 -The tactile screen  
 -The micro SDCard reader
-
 
 ### Prerequisite
 
@@ -78,3 +77,36 @@ sudo minicom -b 115200 -o -D /dev/ttyACM0
 |  LCD_D5          |   5                |
 |  LCD_D6          |   6                |
 |  LCD_D7          |   7                |
+
+## Characters
+
+The characters matrix come from a Commodore 64.  Every char is a matrix of 8 x 8 bits.  
+I am inviting you to consult the file c64charset for more information.
+
+### Mapping ASCII offset
+
+| Char | ASCII |   Offset |
+|------|------:|---------:|
+| SPC  |   32  |      256 |
+|  !   |   33  |      264 |
+| ...  |  ...  |      ... |
+|  ?   |   63  |      504 |
+|  @   |   64  |        0 |
+|  A   |   65  |        8 |
+|  B   |   66  |       16 |
+| ...  |  ...  |      ... |
+|  Z   |   90  |      208 |
+|  [   |   91  |      216 |
+|  \   |   92  | (*1*)224 |
+|  ]   |   93  |      232 |  
+|  ^   |   94  | (*2*)240 |
+|  _   |   95  | (*3*)248 |
+|  `   |   96  | (*4*)256 |
+|  a   |   97  |     2056 |
+|  ... |  ...  |      ... |
+|  z   |  122  |     2256 |
+
+*1* sterling sign  
+*2* up arrow sign  
+*3* left arrow sign  
+*4* SPC

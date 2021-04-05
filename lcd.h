@@ -101,4 +101,6 @@ void pset(uint16_t x, uint16_t y, uint8_t r, uint8_t g, uint8_t b);
 
 void fill_area(uint16_t x1, uint16_t y1,uint16_t width, uint16_t height, uint8_t r, uint8_t g, uint8_t b);
 
+void fill_area_data(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t *data);
+
 #endif

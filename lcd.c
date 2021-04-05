@@ -267,3 +267,20 @@ void fill_area(uint16_t x1, uint16_t y1, uint16_t width, uint16_t height, uint8_
         }
     }
 }
+
+void fill_area_data(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t *data)
+{
+    uint16_t tmpData = 0;
+    set_address(x, y, x + width -1, y + height -1);
+    for (uint16_t y1 = 0; y1 < height; y1++)
+    {
+        for (uint16_t x1 = 0; x1 < width; x1++)
+        {
+            tmpData = data[y1 * width + x1]; 
+            uint8_t msb = tmpData >> 8;
+            uint8_t lsb = tmpData & 0xFF;;
+            lcd_write_data(msb);
+            lcd_write_data(lsb);
+        }
+    }
+}
