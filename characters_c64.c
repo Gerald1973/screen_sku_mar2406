@@ -545,8 +545,10 @@ uint16_t char_ascii_offset(char c)
     }else if (c > 63 && c < 97)
     {
         result = (c - 64) * CHAR_HEIGHT;
-    }else if (c > 96 && c < 123) {
+    }else if (c > 96 && c < 128) {
         result = 2056 + ( c - 97) * CHAR_HEIGHT;
+    }else if (c > 127 && c < 256) {
+        result = 512 + (c-128) * CHAR_HEIGHT;
     }
     return result;
 }

@@ -106,6 +106,8 @@ I am inviting you to consult the file c64charset for more information.
 |  ... |  ...  |      ... |
 |  z   |  122  |     2256 |
 
+Graphic char from offset 512 until 1016 include
+
 *1* sterling sign  
 *2* up arrow sign  
 *3* left arrow sign  
