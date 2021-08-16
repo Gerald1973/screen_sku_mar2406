@@ -2,10 +2,12 @@
 #define CHARACTERS_C64_H
 #include <stdio.h>
 #include "graphism.h"
-
+#define ROWS 40
+#define COLUMNS 30
 const uint8_t CHAR_HEIGHT;
 const uint8_t CHAR_WIDTH;
 const uint16_t char_characters[4096];
+extern uint16_t SCREEN[ROWS * COLUMNS];
 
 /**
  * @brief Build a row of the matrix character
@@ -41,6 +43,24 @@ void char_build_matrix(char c, uint16_t *results, Color color);
  * @param y the row
  * @param color the color
  */
-void char_draw(char c, uint16_t x, uint16_t y, Color color);
+void draw_char(char c, uint16_t x, uint16_t y, Color color);
+
+/**
+ * @brief This method prints a string of character  on the screen.
+ * at the given position.
+ * @param string a char pointer NULL terminated.
+ * @param x  
+ * @param y 
+ * @param color 
+ */
+void draw_string(char *string, uint16_t x, uint16_t y, Color color);
+
+/**
+ * @brief This method print the given text starting at the given crsor position. 
+ * 
+ * @param string 
+ * @param color 
+ */
+void print_text(char *string, Color color);
 
 #endif

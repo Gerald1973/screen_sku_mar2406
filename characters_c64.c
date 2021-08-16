@@ -6,6 +6,9 @@
 
 const uint8_t CHAR_HEIGHT = 8;
 const uint8_t CHAR_WIDTH = 8;
+uint16_t SCREEN[ROWS * COLUMNS] = {0};
+int cursor = 0;
+
 const uint16_t char_characters[4096] = {
     60, 102, 110, 110, 96, 98, 60, 0,
     24, 60, 102, 126, 102, 102, 102, 0,
@@ -540,15 +543,21 @@ void char_write_binary(uint8_t byte, uint16_t *result, Color color)
 uint16_t char_ascii_offset(char c)
 {
     uint16_t result = 0;
-    if (c > 31 && c < 64) {
+    if (c > 31 && c < 64)
+    {
         result = c * CHAR_HEIGHT;
-    }else if (c > 63 && c < 97)
+    }
+    else if (c > 63 && c < 97)
     {
         result = (c - 64) * CHAR_HEIGHT;
-    }else if (c > 96 && c < 128) {
-        result = 2056 + ( c - 97) * CHAR_HEIGHT;
-    }else if (c > 127 && c < 256) {
-        result = 512 + (c-128) * CHAR_HEIGHT;
+    }
+    else if (c > 96 && c < 128)
+    {
+        result = 2056 + (c - 97) * CHAR_HEIGHT;
+    }
+    else if (c > 127 && c < 256)
+    {
+        result = 512 + (c - 128) * CHAR_HEIGHT;
     }
     return result;
 }
@@ -565,9 +574,91 @@ void char_build_matrix(char c, uint16_t *results, Color color)
     }
 }
 
-void char_draw(char c, uint16_t x, uint16_t y, Color color)
+void draw_char(char c, uint16_t x, uint16_t y, Color color)
 {
     uint16_t matrix[CHAR_HEIGHT * CHAR_WIDTH];
     char_build_matrix(c, matrix, color);
-    fill_area_data(x,y,CHAR_WIDTH,CHAR_HEIGHT,matrix);
+    fill_area_data(x, y, CHAR_WIDTH, CHAR_HEIGHT, matrix);
+}
+
+void draw_string(char *string, uint16_t x, uint16_t y, Color color)
+{
+    int i = 0;
+    while (string[i] != '\0')
+    {
+        draw_char(string[i], i * 8, y, color);
+        i++;
+    }
+}
+
+int getScreenLength()
+{
+    int c = 0;
+    while (SCREEN[c] != '\0')
+    {
+        c++;
+    }
+}
+
+void print_screen(int from, int to)
+{
+    int index = 0;
+    int length = 0;
+    for (int r = 0; r < ROWS; r++)
+    {
+        for (int c = 0; c < COLUMNS; c++)
+        {
+            index = (COLUMNS * r) + c;
+            if (index >= from && index < to)
+            {
+                {
+                    if (SCREEN[index] == '\0')
+                    {
+                        //putchar(' ');
+                        draw_char(' ', c * 8, r * 8, RED);
+                    }
+                    else
+                    {
+                        //putchar(SCREEN[index]);
+                        draw_char(SCREEN[index], c * 8, r * 8, RED);
+                    }
+                }
+            }
+        }
+        //putchar('\n');
+    }
+    //printf("==========\n");
+}
+
+void shiftScreenLeft()
+{
+    for (int i = 0; i < ROWS * COLUMNS; i++)
+    {
+        if (i < COLUMNS * (ROWS - 1))
+        {
+            SCREEN[i] = SCREEN[i + COLUMNS];
+        }
+        else
+        {
+            SCREEN[i] = '\0';
+        }
+    }
+}
+
+void print_text(char *string, Color color)
+{
+    int i = 0;
+    while (string[i] != '\0')
+    {
+        if (cursor == ROWS * COLUMNS)
+        {
+            shiftScreenLeft();
+            print_screen(0, ROWS * COLUMNS);
+            cursor = cursor - COLUMNS;
+        }
+        SCREEN[cursor] = string[i];
+        print_screen(cursor, cursor + 1);
+        cursor++;
+        i++;
+    }
 }

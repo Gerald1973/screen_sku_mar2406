@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include"constants.h"
+#include <stdio.h>
+#include "constants.h"
 
 const uint8_t LCD_RST_RESX = 17;
 const uint8_t LCD_CS_CSX = 18;

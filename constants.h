@@ -19,6 +19,8 @@ const uint8_t LCD_D7;
 
 const uint16_t WIDTH;
 const uint16_t HEIGHT;
+const uint16_t WIDTH_IN_CHAR;
+const uint16_t HEIGHT_IN_CHAR;
 
 //Command
 const uint8_t CMD_NO_OP;

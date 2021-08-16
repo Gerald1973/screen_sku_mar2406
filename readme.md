@@ -3,6 +3,7 @@
 ## Description
 
 ![Proof of concept](ILI9341.jpg)
+![Text mode](text_mode.jpg)
 
 This program demonstrates the possibility of using the SKU:MAR2406 to display some information from
 the Raspberry PI Pico RP2040.  
