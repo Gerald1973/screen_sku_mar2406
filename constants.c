@@ -7,14 +7,14 @@ const uint8_t LCD_RS_DCX = 19;
 const uint8_t LCD_WR_WRX = 20;
 const uint8_t LCD_RD_RDX = 21;
 
-const uint8_t LCD_D0 = 0;
-const uint8_t LCD_D1 = 1;
-const uint8_t LCD_D2 = 2;
-const uint8_t LCD_D3 = 3;
-const uint8_t LCD_D4 = 4;
-const uint8_t LCD_D5 = 5;
-const uint8_t LCD_D6 = 6;
-const uint8_t LCD_D7 = 7;
+const uint8_t LCD_D0 = 2;
+const uint8_t LCD_D1 = 3;
+const uint8_t LCD_D2 = 4;
+const uint8_t LCD_D3 = 5;
+const uint8_t LCD_D4 = 6;
+const uint8_t LCD_D5 = 7;
+const uint8_t LCD_D6 = 8;
+const uint8_t LCD_D7 = 9;
 
 const uint16_t WIDTH = 240;
 const uint16_t HEIGHT = 320;

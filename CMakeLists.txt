@@ -28,8 +28,8 @@ add_executable(screen_sku_mar2406 main.c lcd.c graphism.c characters_c64.c const
 pico_set_program_name(screen_sku_mar2406 "screen_sku_mar2406")
 pico_set_program_version(screen_sku_mar2406 "0.1")
 
-pico_enable_stdio_uart(screen_sku_mar2406 0)
-pico_enable_stdio_usb(screen_sku_mar2406 1)
+pico_enable_stdio_uart(screen_sku_mar2406 1)
+pico_enable_stdio_usb(screen_sku_mar2406 0)
 
 # Add the standard library to the build
 target_link_libraries(screen_sku_mar2406 pico_stdlib)

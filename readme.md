@@ -48,6 +48,14 @@ sudo minicom -b 115200 -o -D /dev/ttyACM0
 | GPIO 24 (pin 18) | SWDIO             |
 | GPIO 25 (pin 22) | SWCLK             |
 
+#### UART CONNECTION
+
+| Raspberry Pi      | Raspberry Pi Pico |
+|-------------------|-------------------|
+| TxD UART (pin 8)  | UART0 RX (pin 2)  |
+| RxD UART (pin 10) | UART0 TX (pin 1)  |
+| GND      (pin 12) | GND (pin 3)       |
+
 #### Pins correspondence between the ILI9341 and the SKU:MAR2406
 
 | ILI9341     | SKU:MAR2406| Description    |
@@ -60,24 +68,24 @@ sudo minicom -b 115200 -o -D /dev/ttyACM0
 
 #### Connections from SKU:MAR2406 to the Raspberry Pi Pico
 
-| SKU:MAR2406      | GPIO on the RP2040 |
-|-----------------:|-------------------:|
-|  LCD_RST         |  17                |
-|  LCD_CS          |  18                |
-|  LCD_RS          |  19                |
-|  LCD_WR          |  20                |
-|  LCD_RD          |  21                |
-|  GND             | GND                |  
-|  5V              | VBUS               |
-|  3V3             | VSYS               |
-|  LCD_D0          |   0                |
-|  LCD_D1          |   1                |
-|  LCD_D2          |   2                |
-|  LCD_D3          |   3                |
-|  LCD_D4          |   4                |
-|  LCD_D5          |   5                |
-|  LCD_D6          |   6                |
-|  LCD_D7          |   7                |
+| SKU:MAR2406      | GPIO on the RP2040 | PIN |
+|-----------------:|-------------------:|----:|
+|  LCD_RST         |  17                | 22  | 
+|  LCD_CS          |  18                | 24  |
+|  LCD_RS          |  19                | 25  |
+|  LCD_WR          |  20                | 26  |
+|  LCD_RD          |  21                | 27  |
+|  GND             | GND                |     |
+|  5V              | VBUS               |     |
+|  3V3             | VSYS               |     |
+|  LCD_D0          |   2                |  4  |
+|  LCD_D1          |   3                |  5  |
+|  LCD_D2          |   4                |  6  |
+|  LCD_D3          |   5                |  7  |
+|  LCD_D4          |   6                |  9  |
+|  LCD_D5          |   7                | 10  |
+|  LCD_D6          |   8                | 11  |
+|  LCD_D7          |   9                | 12  |
 
 ## Characters
 

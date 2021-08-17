@@ -48,6 +48,7 @@ int main()
     while (1)
     {
         print_text("Bonjour petit Louis !!!", RED);
+        printf("Bonjour pour minicom.\n");
     }
     return 0;
 }
