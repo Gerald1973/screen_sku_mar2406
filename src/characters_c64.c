@@ -662,3 +662,16 @@ void print_text(char *string, Color color)
         i++;
     }
 }
+
+void print_char(char c, Color color)
+{
+    if (cursor == ROWS * COLUMNS)
+    {
+        shiftScreenLeft();
+        print_screen(0, ROWS * COLUMNS);
+        cursor = cursor - COLUMNS;
+    }
+    SCREEN[cursor] = c;
+    print_screen(cursor, cursor + 1);
+    cursor++;
+}

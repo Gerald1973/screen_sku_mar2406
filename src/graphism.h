@@ -18,12 +18,12 @@ typedef struct {
  * @brief constants declaration
  * 
  */
-const Color BLACK;
-const Color RED;
-const Color GREEN;
-const Color BLUE;
-const Color WHITE;
-const Color YELLOW;
+extern const Color BLACK;
+extern const Color RED;
+extern const Color GREEN;
+extern const Color BLUE;
+extern const Color WHITE;
+extern const Color YELLOW;
 
 /**
  * @brief The point

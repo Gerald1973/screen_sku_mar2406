@@ -63,4 +63,6 @@ void draw_string(char *string, uint16_t x, uint16_t y, Color color);
  */
 void print_text(char *string, Color color);
 
+void print_char(char c, Color color);
+
 #endif

@@ -25,6 +25,8 @@
 
 #include "bsp/board.h"
 #include "tusb.h"
+#include "characters_c64.h"
+#include "graphism.h"
 
 //--------------------------------------------------------------------+
 // MACRO TYPEDEF CONSTANT ENUM DECLARATION
@@ -167,6 +169,7 @@ static void process_kbd_report(hid_keyboard_report_t const *report)
         bool const is_shift =  report->modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
         uint8_t ch = keycode2ascii[report->keycode[i]][is_shift ? 1 : 0];
         putchar(ch);
+        print_char(ch,YELLOW);
         if ( ch == '\r' ) putchar('\n'); // added new line for enter key
 
         fflush(stdout); // flush right away, else nanolib will wait for newline
