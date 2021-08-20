@@ -7,7 +7,7 @@
 const uint8_t CHAR_HEIGHT;
 const uint8_t CHAR_WIDTH;
 const uint16_t char_characters[4096];
-extern uint16_t SCREEN[ROWS * COLUMNS];
+extern char SCREEN[ROWS][COLUMNS];
 
 /**
  * @brief Build a row of the matrix character
@@ -64,5 +64,7 @@ void draw_string(char *string, uint16_t x, uint16_t y, Color color);
 void print_text(char *string, Color color);
 
 void print_char(char c, Color color);
+
+void refresh_screen();
 
 #endif

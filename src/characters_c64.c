@@ -6,8 +6,9 @@
 
 const uint8_t CHAR_HEIGHT = 8;
 const uint8_t CHAR_WIDTH = 8;
-uint16_t SCREEN[ROWS * COLUMNS] = {0};
-int cursor = 0;
+char SCREEN[ROWS][COLUMNS] = {0};
+int cursorX = 0;
+int cursorY = 0;
 
 const uint16_t char_characters[4096] = {
     60, 102, 110, 110, 96, 98, 60, 0,
@@ -591,87 +592,89 @@ void draw_string(char *string, uint16_t x, uint16_t y, Color color)
     }
 }
 
-int getScreenLength()
+void scrollUp()
 {
-    int c = 0;
-    while (SCREEN[c] != '\0')
+    for (int y = 0; y < ROWS - 1; y++)
     {
-        c++;
+        for (int x = 0; x < COLUMNS; x++)
+        {
+            SCREEN[y][x] = SCREEN[y + 1][x];
+        }
     }
-}
-
-void print_screen(int from, int to)
-{
-    int index = 0;
-    int length = 0;
-    for (int r = 0; r < ROWS; r++)
+    for (int x = 0; x < COLUMNS; x++)
     {
-        for (int c = 0; c < COLUMNS; c++)
-        {
-            index = (COLUMNS * r) + c;
-            if (index >= from && index < to)
-            {
-                {
-                    if (SCREEN[index] == '\0')
-                    {
-                        //putchar(' ');
-                        draw_char(' ', c * 8, r * 8, RED);
-                    }
-                    else
-                    {
-                        //putchar(SCREEN[index]);
-                        draw_char(SCREEN[index], c * 8, r * 8, RED);
-                    }
-                }
-            }
-        }
-        //putchar('\n');
-    }
-    //printf("==========\n");
-}
-
-void shiftScreenLeft()
-{
-    for (int i = 0; i < ROWS * COLUMNS; i++)
-    {
-        if (i < COLUMNS * (ROWS - 1))
-        {
-            SCREEN[i] = SCREEN[i + COLUMNS];
-        }
-        else
-        {
-            SCREEN[i] = '\0';
-        }
+        SCREEN[ROWS-1][x] = '\0';
     }
 }
 
 void print_text(char *string, Color color)
 {
+    printf("CursorX: %d CursorY: %d ", cursorX, cursorY);
     int i = 0;
+    int tmpCursorX = 0;
+    int tmpCursorY = 0;
     while (string[i] != '\0')
     {
-        if (cursor == ROWS * COLUMNS)
+        if (cursorX == COLUMNS)
         {
-            shiftScreenLeft();
-            print_screen(0, ROWS * COLUMNS);
-            cursor = cursor - COLUMNS;
+            cursorY++;
+            if (cursorY == ROWS)
+            {
+                scrollUp();
+                refresh_screen();
+                cursorY--;
+            }
+            cursorX = 0;
         }
-        SCREEN[cursor] = string[i];
-        print_screen(cursor, cursor + 1);
-        cursor++;
+        if (SCREEN[cursorY][cursorX] != string[i])
+        {
+            SCREEN[cursorY][cursorX] = string[i];
+            draw_char(string[i], cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
+        }
         i++;
+        cursorX++;
+    }
+    tmpCursorX = cursorX;
+    tmpCursorY = cursorY;
+    while (tmpCursorY < ROWS && tmpCursorX < COLUMNS)
+    {
+        if (tmpCursorX == COLUMNS)
+        {
+            tmpCursorX = 0;
+            tmpCursorY++;
+        }
+        if (tmpCursorY < ROWS)
+        {
+            if (SCREEN[tmpCursorY][tmpCursorX] != '\0')
+            {
+                SCREEN[tmpCursorY][tmpCursorX] = '\0';
+                draw_char(' ', tmpCursorX * CHAR_WIDTH, tmpCursorY * CHAR_HEIGHT, color);
+            }
+            tmpCursorY++;
+        }
     }
 }
 
 void print_char(char c, Color color)
 {
-    if (cursor == ROWS * COLUMNS)
+    char string[] = {c, '\0'};
+    print_text(string, color);
+}
+
+void refresh_screen()
+{
+    for (int y = 0; y < ROWS; y++)
     {
-        shiftScreenLeft();
-        print_screen(0, ROWS * COLUMNS);
-        cursor = cursor - COLUMNS;
+        for (int x = 0; x < COLUMNS; x++)
+        {
+            if (SCREEN[y][x] == '\0')
+            {
+                draw_char(' ', x * CHAR_WIDTH, y * CHAR_HEIGHT, YELLOW);
+            }
+            else
+            {
+                draw_char(SCREEN[y][x], x * CHAR_WIDTH, y * CHAR_HEIGHT, YELLOW);
+            }
+        }
     }
-    SCREEN[cursor] = c;
-    print_screen(cursor, cursor + 1);
-    cursor++;
 }
