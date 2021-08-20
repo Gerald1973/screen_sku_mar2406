@@ -49,17 +49,17 @@ int main()
     graph_circle(WIDTH / 2, HEIGHT / 2, WIDTH / 2, WHITE);
     uint16_t posy = 0;
     uint16_t posx = 0;
-    /*for (int i = 0; i < 224; i++)
-    {
-        posx = (i * CHAR_WIDTH) % WIDTH;
-        posy = ((i * CHAR_WIDTH) / WIDTH) * CHAR_HEIGHT;
-        draw_char(i + 32, posx, posy, WHITE);
-    }*/
     int c = 0;
     board_init();
     print_greeting();
-    
     tusb_init();
+    char* TMPSTRING[200]={0};
+    for (int i = 0; i < 100; i++)
+    {
+        sprintf(TMPSTRING,"%d Bonjour Louis.\n",i);
+        printf(TMPSTRING);
+        print_text(TMPSTRING, YELLOW);
+    }
 
     while (1)
     {

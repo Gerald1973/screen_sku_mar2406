@@ -578,6 +578,12 @@ void char_build_matrix(char c, uint16_t *results, Color color)
 void draw_char(char c, uint16_t x, uint16_t y, Color color)
 {
     uint16_t matrix[CHAR_HEIGHT * CHAR_WIDTH];
+    switch (c)
+    {
+    case '\n':
+    case '\0':
+        c = ' ';
+    }
     char_build_matrix(c, matrix, color);
     fill_area_data(x, y, CHAR_WIDTH, CHAR_HEIGHT, matrix);
 }
@@ -603,8 +609,24 @@ void scrollUp()
     }
     for (int x = 0; x < COLUMNS; x++)
     {
-        SCREEN[ROWS-1][x] = '\0';
+        SCREEN[ROWS - 1][x] = '\0';
     }
+}
+
+void display_cursor()
+{
+    if (cursorX == COLUMNS)
+    {
+        cursorY++;
+        if (cursorY == ROWS)
+        {
+            scrollUp();
+            refresh_screen();
+            cursorY--;
+        }
+        cursorX = 0;
+    }
+    draw_char('_', cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, YELLOW);
 }
 
 void print_text(char *string, Color color)
@@ -613,45 +635,30 @@ void print_text(char *string, Color color)
     int i = 0;
     int tmpCursorX = 0;
     int tmpCursorY = 0;
+    char tmpChar = '\0';
     while (string[i] != '\0')
     {
-        if (cursorX == COLUMNS)
+        tmpChar = string[i];
+        if (tmpChar == '\n')
         {
-            cursorY++;
-            if (cursorY == ROWS)
+            SCREEN[cursorY][cursorX] = tmpChar;
+            draw_char(SCREEN[cursorY][cursorX], cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
+            cursorX++;
+            for (int i = cursorX; i < COLUMNS; i++)
             {
-                scrollUp();
-                refresh_screen();
-                cursorY--;
+                SCREEN[cursorY][i] = '\0';
+                draw_char(SCREEN[cursorY][i], i * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
             }
-            cursorX = 0;
+            cursorX = COLUMNS;
         }
-        if (SCREEN[cursorY][cursorX] != string[i])
+        else if (SCREEN[cursorY][cursorX] != tmpChar)
         {
             SCREEN[cursorY][cursorX] = string[i];
             draw_char(string[i], cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
+            cursorX++;
         }
         i++;
-        cursorX++;
-    }
-    tmpCursorX = cursorX;
-    tmpCursorY = cursorY;
-    while (tmpCursorY < ROWS && tmpCursorX < COLUMNS)
-    {
-        if (tmpCursorX == COLUMNS)
-        {
-            tmpCursorX = 0;
-            tmpCursorY++;
-        }
-        if (tmpCursorY < ROWS)
-        {
-            if (SCREEN[tmpCursorY][tmpCursorX] != '\0')
-            {
-                SCREEN[tmpCursorY][tmpCursorX] = '\0';
-                draw_char(' ', tmpCursorX * CHAR_WIDTH, tmpCursorY * CHAR_HEIGHT, color);
-            }
-            tmpCursorY++;
-        }
+        display_cursor();
     }
 }
 
