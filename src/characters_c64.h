@@ -72,4 +72,6 @@ void back_space();
 
 void screenToString();
 
+void display_cursor(int posX, int posY, Color color);
+
 #endif
