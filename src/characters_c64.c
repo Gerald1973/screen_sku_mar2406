@@ -4,9 +4,10 @@
 #include "graphism.h"
 #include "characters_c64.h"
 
-const uint8_t CHAR_HEIGHT = 8;
-const uint8_t CHAR_WIDTH = 8;
+const int SCREEN_LENGTH = ROWS * COLUMNS;
 char SCREEN[ROWS][COLUMNS] = {0};
+char *SCREEN_ROW = (char *)SCREEN;
+char STRING[ROWS * COLUMNS + 1] = {'\0'};
 int cursorX = 0;
 int cursorY = 0;
 
@@ -524,6 +525,30 @@ const uint16_t char_characters[4096] = {
     15, 15, 15, 15, 255, 255, 255, 255,
     15, 15, 15, 15, 240, 240, 240, 240};
 
+void screenToString()
+{
+    char tmp = '\0';
+    int c = 0;
+    for (int i = 0; i < ROWS * COLUMNS + 1; i++)
+    {
+        STRING[i] = tmp;
+    }
+    for (int i = 0; i < SCREEN_LENGTH; i++)
+    {
+        tmp = SCREEN_ROW[i];
+        switch (tmp)
+        {
+        case ('\b'):
+        case ('\0'):
+            break;
+        default:
+            STRING[c] = tmp;
+            c++;
+        }
+    }
+    printf("%s\n", STRING);
+}
+
 void char_write_binary(uint8_t byte, uint16_t *result, Color color)
 {
     uint8_t tmp = byte;
@@ -613,7 +638,7 @@ void scrollUp()
     }
 }
 
-void display_cursor()
+void calculate_cursor(Color color)
 {
     if (cursorX == COLUMNS)
     {
@@ -626,40 +651,93 @@ void display_cursor()
         }
         cursorX = 0;
     }
-    draw_char('_', cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, YELLOW);
+}
+
+void put_char_at(int posX, int posY, char c, Color color)
+{
+    if (SCREEN[posY][posX] != c)
+    {
+        SCREEN[posY][posX] = c;
+        draw_char(SCREEN[posY][posX], posX * CHAR_WIDTH, posY * CHAR_HEIGHT, color);
+    }
+}
+
+void display_cursor(int posX, int posY, Color color)
+{
+    put_char_at(posX, posY, '_', GREEN);
+}
+
+void remove_char_at(int pos)
+{
+    for (int i = pos; i < SCREEN_LENGTH - 1; i++)
+    {
+        SCREEN_ROW[i] = SCREEN_ROW[i + 1];
+    }
+    SCREEN_ROW[SCREEN_LENGTH - 1] = '\0';
+}
+
+void remove_char_at_xy(int x, int y)
+{
+    int absPos = (y * COLUMNS) + x;
+    remove_char_at(absPos);
+}
+
+void back_space()
+{
+    int absPos = (cursorY * COLUMNS) + cursorX;
+    int x = 0;
+    int y = 0;
+    while ( (SCREEN_ROW[absPos] == '\0' || SCREEN_ROW[absPos] == '_') && absPos > -1)
+    {
+        y = absPos / COLUMNS;
+        x = absPos % COLUMNS;
+        SCREEN_ROW[absPos] = '\0';
+        draw_char(' ', x * CHAR_WIDTH, y * CHAR_HEIGHT, YELLOW);
+        absPos--;
+    }
+    if (SCREEN_ROW[absPos] != '\0')
+    {
+        remove_char_at(absPos);
+    }
+    screenToString();
+    cursorX = 0;
+    cursorY = 0;
+    print_text(STRING, YELLOW);
+}
+
+void print_new_line(int posX, int posY, Color color)
+{
+    SCREEN[posY][posX] = '\n';
+    draw_char(SCREEN[posY][posX], posX * CHAR_WIDTH, posY * CHAR_HEIGHT, color);
+    posX++;
+    for (int j = posX; j < COLUMNS; j++)
+    {
+        SCREEN[posY][j] = '\0';
+        draw_char(SCREEN[cursorY][j], j * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
+    }
 }
 
 void print_text(char *string, Color color)
 {
-    printf("CursorX: %d CursorY: %d ", cursorX, cursorY);
     int i = 0;
-    int tmpCursorX = 0;
-    int tmpCursorY = 0;
     char tmpChar = '\0';
     while (string[i] != '\0')
     {
         tmpChar = string[i];
         if (tmpChar == '\n')
         {
-            SCREEN[cursorY][cursorX] = tmpChar;
-            draw_char(SCREEN[cursorY][cursorX], cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
-            cursorX++;
-            for (int i = cursorX; i < COLUMNS; i++)
-            {
-                SCREEN[cursorY][i] = '\0';
-                draw_char(SCREEN[cursorY][i], i * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
-            }
+            print_new_line(cursorX, cursorY, color);
             cursorX = COLUMNS;
         }
-        else if (SCREEN[cursorY][cursorX] != tmpChar)
+        else
         {
-            SCREEN[cursorY][cursorX] = string[i];
-            draw_char(string[i], cursorX * CHAR_WIDTH, cursorY * CHAR_HEIGHT, color);
+            put_char_at(cursorX, cursorY, tmpChar, color);
             cursorX++;
         }
+        calculate_cursor(GREEN);
         i++;
-        display_cursor();
     }
+    display_cursor(cursorX, cursorY, GREEN);
 }
 
 void print_char(char c, Color color)

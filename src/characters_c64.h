@@ -4,8 +4,9 @@
 #include "graphism.h"
 #define ROWS 40
 #define COLUMNS 30
-const uint8_t CHAR_HEIGHT;
-const uint8_t CHAR_WIDTH;
+#define CHAR_HEIGHT 8
+#define CHAR_WIDTH 8
+
 const uint16_t char_characters[4096];
 extern char SCREEN[ROWS][COLUMNS];
 
@@ -66,5 +67,9 @@ void print_text(char *string, Color color);
 void print_char(char c, Color color);
 
 void refresh_screen();
+
+void back_space();
+
+void screenToString();
 
 #endif
